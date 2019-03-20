@@ -31,7 +31,7 @@ user_pref("browser.newtabpage.pinned", "[
 	{\"url\":\"https://www.facebook.com/#\",\"label\":\"facebook\",\"baseDomain\":\"facebook.com\"},
 	{\"url\":\"https://term.ptt.cc/\",\"label\":\"PttChrome\",\"baseDomain\":\"term.ptt.cc\"},
 	{\"url\":\"https://www.google.com.tw/\",\"label\":\"google\",\"baseDomain\":\"google.com.tw\"},
-	{\"url\":\"https://www.youtube.com/?hl=zh-TW&gl=TW\",\"label\":\"youtube\",\"baseDomain\":\"youtube.com\"},
+	{\"url\":\"https://www.youtube.com\",\"label\":\"youtube\",\"baseDomain\":\"youtube.com\"},
 	{\"url\":\"https://www06.eyny.com/\",\"label\":\"eyny\",\"baseDomain\":\"eyny.com\"},
 	{\"url\":\"https://www.gamer.com.tw/\",\"label\":\"gamer\",\"baseDomain\":\"gamer.com.tw\"},
 	{\"url\":\"https://www.coolaler.com/home/\",\"label\":\"coolaler\",\"baseDomain\":\"coolaler.com\"},
@@ -43,11 +43,15 @@ user_pref("browser.newtabpage.pinned", "[
 	{\"url\":\"https://imascg-slstage-wiki.gamerch.com/\",\"baseDomain\":\"imascg-slstage-wiki.gamerch.com\"},
 	{\"url\":\"https://imasml-theater-wiki.gamerch.com/\",\"baseDomain\":\"imasml-theater-wiki.gamerch.com\"},
 	{\"url\":\"https://pad.skyozora.com/\",\"label\":\"pad.skyozora\",\"baseDomain\":\"pad.skyozora.com\"},
-	{\"url\":\"https://docs.opencv.org/3.3.0/\",\"label\":\"OpenCV-API\",\"baseDomain\":\"docs.opencv.org\"}]");
+	{\"url\":\"https://appmedia.jp/pazudora\",\"label\":\"PAD-appmedia\"}]");
+
+
 
 /* mouse click on URL bar's behavior */
 user_pref("browser.urlbar.clickSelectsAll", true);
 user_pref("browser.urlbar.doubleClickSelectsAll", false);
+
+
 
 /* middle-click behavior */
 user_pref("middlemouse.paste", false);
@@ -65,14 +69,17 @@ user_pref("browser.cache.disk.capacity", 0);
 user_pref("browser.cache.disk.smart_size.enabled", false);
 user_pref("browser.cache.disk.smart_size.first_run", false);
 
+
+
 /* disable disk cache for SSL pages
  * 
  * http://kb.mozillazine.org/Browser.cache.disk_cache_ssl
  *
- *
  * browser.cache.disk.enable and network.http.use-cache must be set to true if you wish to enable disk caching of SSL pages.
  * If this preference is set to false, browser.cache.memory.enable and network.http.use-cache must be set to true if you wish to enable memory caching of SSL pages. ***/
 user_pref("browser.cache.disk_cache_ssl", false);
+
+
 
 /* enable memory cache */
 user_pref("browser.cache.memory.enable", true);	 // default is true.
@@ -94,8 +101,10 @@ user_pref("network.http.use-cache", true);  // default is true.
    // user_pref("browser.sessionstore.privacy_level", 2);
 
 
+
 /* disable resuming session from crash */
    // user_pref("browser.sessionstore.resume_from_crash", false);
+
 
 
 /* set the minimum interval between session save operations
@@ -116,8 +125,8 @@ user_pref("browser.sessionstore.interval", 30000);
 
 /* disable hardware acceleration */
    // user_pref("layers.acceleration.disabled", true);
-
-/* blocked graphics features, see [1]. OMTC, WebGL, ...(WebGL not on Arch wiki firefox tweaks)
+/*
+ * blocked graphics features, see [1]. OMTC, WebGL, ...(WebGL not on Arch wiki firefox tweaks)
  * [1] https://wiki.mozilla.org/Blocklisting/Blocked_Graphics_Drivers#On_X11
  *
  * force-enable OpenGL Off-Main-Thread Compositing(OMTC) 
@@ -125,10 +134,28 @@ user_pref("browser.sessionstore.interval", 30000);
  * Basic software OMTC is enabled by default.
  * To check if OpenGL OMTC is enabled, go to about:support and under the "Graphics" section look for "Compositing".
  * If it reports "Basic", OpenGL OMTC is disabled; if it reports "OpenGL" it is enabled.
- * firefox crash and window becomes black, get Unflushed glGetGraphicsResetStatus: 0x92bb(in .xsession-errors) error when system resume. ***/
+ *
+ * firefox crash and window becomes black, get (Unflushed glGetGraphicsResetStatus: 0x92bb(in .xsession-errors)? ) error when system resume. 
+ * 
+ * Enable WebRender compositor in Servo, instead of Gecko. Fixes some black visual glitches when "OpenGL Off-Main-Thread" is enabled. See below next settings. ***/
 user_pref("layers.acceleration.force-enabled", true);
 
-/* force-enable WebGL
+
+
+/* enable WebRender
+ * 
+ * Enables WebRender compositor in Servo, instead of Gecko. Improves performance in supported hardware. 
+ * Fixes some black visual glitches when "OpenGL Off-Main-Thread" is enabled.
+ * (Fix firefox window becomes black after system resume when OMTC is enabled.)
+ * 
+ * To check if webrender is enabled go to about:support and under the "Graphics" section look for "WEBRENDER". 
+ * If it reports "available by user: Force enabled by pref", it means is enabled. Otherwise it will just report "opt-in by default".***/
+user_pref("gfx.webrender.all", true);
+
+
+
+/* force-enable WebGL / disable WebGL
+ * 
  * WebGL is a potential security risk, see [1]
  * Set webgl.disabled to true in about:config if you want to disable it.
  * [1] https://security.stackexchange.com/questions/13799/is-webgl-a-security-concern */
@@ -150,19 +177,29 @@ user_pref("webgl.disabled", true);
 /* anti-fingerprinting */
    // user_pref("privacy.resistFingerprinting", true);
 
+
+
 /* enable tracking protection */
 user_pref("privacy.trackingprotection.enabled", true);
+
+
 
 /* prevent WebRTC exposes LAN IP address */
 user_pref("media.peerconnection.ice.default_address_only", true);
    // user_pref("media.peerconnection.enabled", false);  // only if you want to completely disable WebRTC
 
+
+
 /* Do Not Track Header (DNT) 
  * The Do Not Track header may be used to fingerprint your browser, since most users leave the option disabled. ***/
 user_pref("privacy.donottrackheader.enabled", false);
 
+
+
 /* disable geolocation */
 user_pref("geo.enabled", false);
+
+
 
 /* safe browsing service
  * safe Browsing offers phishing protection and malware checks, however it may send user information (e.g. URL, file hashes, etc.) to third parties like Google.
@@ -170,6 +207,8 @@ user_pref("geo.enabled", false);
 user_pref("browser.safebrowsing.malware.enabled", false);
 user_pref("browser.safebrowsing.phishing.enabled", false);
 user_pref("browser.safebrowsing.downloads.enabled", false);
+
+
 
 /* disable WebGL
  * see HARDWARE ACCELERATION ***/
