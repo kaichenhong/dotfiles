@@ -42,7 +42,7 @@ user_pref("browser.newtabpage.pinned", "[
 	{\"url\":\"https://shadowverse.gamewith.jp/\",\"baseDomain\":\"shadowverse.gamewith.jp\"},
 	{\"url\":\"https://imascg-slstage-wiki.gamerch.com/\",\"baseDomain\":\"imascg-slstage-wiki.gamerch.com\"},
 	{\"url\":\"https://imasml-theater-wiki.gamerch.com/\",\"baseDomain\":\"imasml-theater-wiki.gamerch.com\"},
-	{\"url\":\"https://pad.skyozora.com/\",\"label\":\"pad.skyozora\",\"baseDomain\":\"pad.skyozora.com\"},
+	{\"url\":\"http://pad.skyozora.com/\",\"label\":\"pad.skyozora\",\"baseDomain\":\"pad.skyozora.com\"},
 	{\"url\":\"https://appmedia.jp/pazudora\",\"label\":\"PAD-appmedia\"}]");
 
 
