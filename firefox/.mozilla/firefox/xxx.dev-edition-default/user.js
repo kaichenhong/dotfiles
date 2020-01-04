@@ -26,6 +26,9 @@
 /***** User preference settings *****/
 /************************************/
 
+/* newtabpage top sites rows */
+user_pref("browser.newtabpage.activity-stream.topSitesRows", 3);
+
 /* newtabpage pinned website */
 user_pref("browser.newtabpage.pinned", "[
 	{\"url\":\"https://www.facebook.com/#\",\"label\":\"facebook\",\"baseDomain\":\"facebook.com\"},
@@ -43,7 +46,15 @@ user_pref("browser.newtabpage.pinned", "[
 	{\"url\":\"https://imascg-slstage-wiki.gamerch.com/\",\"baseDomain\":\"imascg-slstage-wiki.gamerch.com\"},
 	{\"url\":\"https://imasml-theater-wiki.gamerch.com/\",\"baseDomain\":\"imasml-theater-wiki.gamerch.com\"},
 	{\"url\":\"http://pad.skyozora.com/\",\"label\":\"pad.skyozora\",\"baseDomain\":\"pad.skyozora.com\"},
-	{\"url\":\"https://appmedia.jp/pazudora\",\"label\":\"PAD-appmedia\"}]");
+	{\"url\":\"https://appmedia.jp/pazudora\",\"label\":\"PAD-appmedia\"},
+	{\"url\":\"http://mobile.mediatek.com/home/\"},
+	{\"url\":\"https://github.com/kaichenhong\",\"label\":\"My Github\"},
+	{\"url\":\"https://leetcode.com/\"},
+	{\"url\":\"https://github.com/azl397985856/leetcode\",\"label\":\"leetcode problems\"},
+	{\"url\":\"https://anime1.me/\",\"label\":\"anime1\"},
+	{\"url\":\"https://9db.jp/shironeko/\"},
+	{\"url\":\"https://appmedia.jp/sironekoproject\",\"label\":\"白猫プロジェクト攻略Wiki \"},
+	{\"url\":\"https://gamewith.jp/pricone-re/\",\"label\":\"プリコネ攻略\"}]");
 
 
 
