@@ -21,16 +21,49 @@ set t_Co=256
 "                Custom plugins                   "
 " *********************************************** "
 
+""
+" vim-airline settings.
+"
+let g:airline_powerline_fonts=1
+
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#tabline#show_tab_nr = 1
+" let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+let g:ariline#extensions#tabline#formatter='unique_tail'
+
+
+""
 " Powerline settings, see [1] and [2].
+"
 " [1] https://wiki.archlinux.org/index.php/Powerline
 " [2] https://powerline.readthedocs.io/en/master/overview.html
-let g:powerline_pycmd="py3"
+"
+" let g:powerline_pycmd="py3"
 
 
 " *********************************************** "
 "                Editing behaviour                "
 " *********************************************** "
-set clipboard=unnamed
+set clipboard^=unnamed,unnamedplus
+
+" For linux kernel coding style.
+"   Highlight 81th column with vertical line.
+set colorcolumn=81
+" execute "set colorcolumn=" . join(range(81,335), ',').
+highlight ColorColumn ctermbg=Black ctermfg=DarkRed
+
+
+" Highlight trailing spaces
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s+$/
+autocmd BufWinLeave * call clearmatches()
+
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -76,17 +109,26 @@ set clipboard=unnamed
 " Sets how many lines of history VIM has to remember
 set history=500
 
+
 " Enable filetype plugins
 filetype plugin on
 filetype indent on
+
 
 " Set to auto read when a file is changed from the outside
 set autoread
 au FocusGained,BufEnter * checktime
 
+
+" Let ":find" command is recursive
+set path+=**
+
+
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
 let mapleader = ","
+map <space> ,
+
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -102,58 +144,74 @@ command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
 " Set 7 lines to the cursor - when moving vertically using j/k
 set so=7
 
+
 " Avoid garbled characters in Chinese language windows OS
 let $LANG='en'
 set langmenu=en
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
+
 " Turn on the Wild menu
 set wildmenu
+
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
 if has("win16") || has("win32")
-    set wildignore+=.git\*,.hg\*,.svn\*
+	set wildignore+=.git\*,.hg\*,.svn\*
 else
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+	set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 endif
+
 
 "Always show current position
 set ruler
 
+
 " Height of the command bar
 set cmdheight=1
+
 
 " A buffer becomes hidden when it is abandoned
 set hid
 
+
 " Configure backspace so it acts as it should act
+"   Incase can't delete in INSERT mode
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+
 
 " Ignore case when searching
 set ignorecase
 
+
 " When searching try to be smart about cases
 set smartcase
+
 
 " Highlight search results
 set hlsearch
 
+
 " Makes search act like search in modern browsers
 set incsearch
 
+
 " Don't redraw while executing macros (good performance config)
-set lazyredraw
+" set lazyredraw
+
 
 " For regular expressions turn magic on
 set magic
+
 
 " Show matching brackets when text indicator is over them
 set showmatch
 " How many tenths of a second to blink when matching brackets
 set mat=2
+
 
 " No annoying sound on errors
 set noerrorbells
@@ -163,7 +221,7 @@ set tm=500
 
 " Properly disable sound on errors on MacVim
 if has("gui_macvim")
-    autocmd GUIEnter * set vb t_vb=
+	autocmd GUIEnter * set vb t_vb=
 endif
 
 
@@ -175,46 +233,74 @@ set foldcolumn=1
 set number relativenumber
 
 augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave,WinEnter * set number relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &number | set norelativenumber | endif
+	autocmd!
+	autocmd BufEnter,FocusGained,InsertLeave,WinEnter * set number relativenumber
+	autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &number | set norelativenumber | endif
 augroup END
 
 highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 
-" Show cursorline
-set cursorline
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+" => Colors and Fonts 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
+"   Make source code looks more colorfull, it will call <filetype on>
+"
+"       The ":syntax enable" command will keep your current color settings.
+"       This allows using ":highlight" commands to set your preferred colors
+"       before or after using this command.
+"       If you want Vim to overrule your settings with the defaults,
+"       use: "syntax on"
+" syntax on
 syntax enable
 
+
 " Enable 256 colors palette in Gnome Terminal
-" if $COLORTERM == 'gnome-terminal'
-    set t_Co=256
-" endif
+if $COLORTERM == 'gnome-terminal'
+	set t_Co=256
+endif
+
+
+" Set background and color scheme
+set background=dark
 
 try
-    colorscheme desert
+	colorscheme desert
+
+	""
+	" Download colorscheme
+
+	" colorscheme peaksea
+	" colorscheme mrkn256
+
+	" Color scheme --- hybrid
+	" let g:hybrid_custom_term_colors=1
+	let g:hybrid_reduced_contrast=1		" Remove this line if using the default palette.
+	colorscheme hybrid
 catch
 endtry
 
-set background=dark
 
-" Set extra options when running in GUI mode
-if has("gui_running")
-    set guioptions-=T
-    set guioptions-=e
-    set t_Co=256
-    set guitablabel=%M\ %t
-endif
+" Set highlight color. (override colorscheme settings)
+highlight Search cterm=NONE ctermfg=grey ctermbg=blue
+
+
+" Show cursorline
+set cursorline
+" highlight CursorLine term=NONE cterm=NONE gui=NONE
+" highlight CursorLine ctermbg=darkred ctermfg=white guibg=darkgreen guifg=white
+
+
+" Show cursorcolumn
+set cursorcolumn
+" highlight CursorColumn term=NONE cterm=NONE gui=NONE
+" highlight CursorLine ctermbg=darkred ctermfg=white guibg=darkgreen guifg=white
+
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
+
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
@@ -232,15 +318,20 @@ set noswapfile
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Use spaces instead of tabs
+" Use / Don't use spaces instead of tabs
 " set expandtab
+set noexpandtab
+
 
 " Be smart when using tabs ;)
 set smarttab
 
+
 " 1 tab == 4 spaces
-set shiftwidth=0
 set tabstop=4
+set softtabstop=4
+set shiftwidth=0
+
 
 " Linebreak on 500 characters
 set lbr
@@ -249,6 +340,29 @@ set tw=500
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+
+
+" Auto completion settings
+"	default: completeopt=menu,preview
+"		https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+set completeopt=longest,menuone
+
+" inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
+"   \ '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+" inoremap <expr> <M-,> pumvisible() ? '<C-n>' :
+"   \ '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+
+
+" Enable Omni completion and combine settings for user complete
+set omnifunc=syntaxcomplete#Complete
+
+" open omni completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <C-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+			\ '<C-x><C-o><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
+" open user completion menu closing previous if open and opening new menu without changing the text
+inoremap <expr> <S-Space> (pumvisible() ? (col('.') > 1 ? '<Esc>i<Right>' : '<Esc>i') : '') .
+			\ '<C-x><C-u><C-r>=pumvisible() ? "\<lt>C-n>\<lt>C-p>\<lt>Down>" : ""<CR>'
 
 
 """"""""""""""""""""""""""""""
@@ -264,11 +378,13 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <C-space> ?
+" map <space> /
+" map <C-space> ?
+
 
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader><cr> :noh<cr>
+
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -276,14 +392,18 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
+
 " Close the current buffer
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
 
 " Close all the buffers
 map <leader>ba :bufdo bd<cr>
 
+
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
+
 
 " Useful mappings for managing tabs
 map <leader>tn :tabnew<cr>
@@ -291,6 +411,7 @@ map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>t<leader> :tabnext
+
 
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
@@ -302,18 +423,48 @@ au TabLeave * let g:lasttab = tabpagenr()
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <C-r>=expand("%:p:h")<cr>/
 
+
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
+
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
-  set stal=2
+	set switchbuf=useopen,usetab,newtab
+	set stal=2
 catch
 endtry
 
+
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+" Go to buffer by number
+nnoremap <Leader><tab> :e#<CR>
+nnoremap <Leader>1 :bfirst<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :blast<CR>
+
+
+" Go to tab by number
+" noremap <leader>1 1gt
+" noremap <leader>2 2gt
+" noremap <leader>3 3gt
+" noremap <leader>4 4gt
+" noremap <leader>5 5gt
+" noremap <leader>6 6gt
+" noremap <leader>7 7gt
+" noremap <leader>8 8gt
+" noremap <leader>9 9gt
+" noremap <leader>0 :tablast<cr>
 
 
 """"""""""""""""""""""""""""""
@@ -321,6 +472,7 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 """"""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
+
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
@@ -332,6 +484,7 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
+
 " Move a line of text using ALT+[jk] or Command+[jk] on mac
 nmap <M-j> mz:m+<cr>`z
 nmap <M-k> mz:m-2<cr>`z
@@ -339,24 +492,52 @@ vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
 vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 if has("mac") || has("macunix")
-  nmap <D-j> <M-j>
-  nmap <D-k> <M-k>
-  vmap <D-j> <M-j>
-  vmap <D-k> <M-k>
+	nmap <D-j> <M-j>
+	nmap <D-k> <M-k>
+	vmap <D-j> <M-j>
+	vmap <D-k> <M-k>
 endif
+
+" Move a line of text using ALT+[jk]
+nnoremap <A-j> :m .+1<CR>==
+nnoremap <A-k> :m .-2<CR>==
+inoremap <A-j> <Esc>:m .+1<CR>==gi
+inoremap <A-k> <Esc>:m .-2<CR>==gi
+vnoremap <A-j> :m '>+1<CR>gv=gv
+vnoremap <A-k> :m '<-2<CR>gv=gv
+
 
 " Delete trailing white space on save, useful for some filetypes ;)
 fun! CleanExtraSpaces()
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    silent! %s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
+	let save_cursor = getpos(".")
+	let old_query = getreg('/')
+	silent! %s/\s\+$//e
+	call setpos('.', save_cursor)
+	call setreg('/', old_query)
 endfun
 
 if has("autocmd")
-    autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+	" For all filetype use
+	" autocmd BufWritePre :call CleanExtraSpaces()
+
+	" For specify a particular filetype use
+	autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+	autocmd FileType c,cpp,java,php,vim autocmd BufWritePre :call CleanExtraSpaces()
 endif
+
+
+" Convert leading space to tabs, useful for some filetypes ;)
+fun! ConvertLeadingSpacesToTabs()
+	let save_cursor = getpos(".")
+	let old_query = getreg('/')
+
+	" Search for every instance of 4 consecutive spaces (after the = character),
+	" but only if the entire line up to that point is whitespace
+	" (this uses the zero-width look-behind assertion, \@<=).
+	silent! %s/\(^\s*\)\@<=    /\t/g
+	call setpos('.', save_cursor)
+	call setreg('/', old_query)
+endfun
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -364,6 +545,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
+
 
 " Shortcuts using <leader>
 map <leader>sn ]s
@@ -378,11 +560,14 @@ map <leader>s? z=
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
+
 " Quickly open a buffer for scribble
 map <leader>q :e ~/buffer<cr>
 
+
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
+
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
@@ -391,61 +576,97 @@ map <leader>pp :setlocal paste!<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Highlight all instances of word under cursor, when idle.
+"   Useful when studying strange source code.
+"   Type z/ to toggle highlighting on/off.
+"	Use 'n' and 'N' to jump between them like search results.
+nnoremap z/ :if AutoHighlightToggle()<Bar>set hls<Bar>endif<CR>
+function! AutoHighlightToggle()
+	let @/ = ''
+	if exists('#auto_highlight')
+		au! auto_highlight
+		augroup! auto_highlight
+		setl updatetime=4000
+		echo 'Highlight current word: off'
+		return 0
+	else
+		augroup auto_highlight
+			au!
+			au CursorHold * let @/ = '\V\<'.escape(expand('<cword>'), '\').'\>'
+		augroup end
+		setl updatetime=30
+		echo 'Highlight current word: ON'
+		return 1
+	endif
+endfunction
+
+" autosave delay, cursorhold trigger, default: 4000ms
+setl updatetime=30
+" highlight the word under cursor (CursorMoved is inperformant)
+highlight WordUnderCursor cterm=underline gui=underline
+autocmd CursorHold * call HighlightCursorWord()
+function! HighlightCursorWord()
+	" if hlsearch is active, don't overwrite it!
+	let search = getreg('/')
+	let cword = expand('<cword>')
+	if match(cword, search) == -1
+		exe printf('match WordUnderCursor /\V\<%s\>/', escape(cword, '/\'))
+	endif
+endfunction
+
+
 " Returns true if paste mode is enabled
 function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
+	if &paste
+		return 'PASTE MODE  '
+	endif
+	return ''
 endfunction
 
 
 " Don't close window, when deleting a buffer
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
-    let l:currentBufNum = bufnr("%")
-    let l:alternateBufNum = bufnr("#")
+	let l:currentBufNum = bufnr("%")
+	let l:alternateBufNum = bufnr("#")
 
-    if buflisted(l:alternateBufNum)
-        buffer #
-    else
-        bnext
-    endif
+	if buflisted(l:alternateBufNum)
+		buffer #
+	else
+		bnext
+	endif
 
-    if bufnr("%") == l:currentBufNum
-        new
-    endif
+	if bufnr("%") == l:currentBufNum
+		new
+	endif
 
-    if buflisted(l:currentBufNum)
-        execute("bdelete! ".l:currentBufNum)
-    endif
+	if buflisted(l:currentBufNum)
+		execute("bdelete! ".l:currentBufNum)
+	endif
 endfunction
 
 
 function! CmdLine(str)
-    call feedkeys(":" . a:str)
+	call feedkeys(":" . a:str)
 endfunction
 
 
 function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
+	let l:saved_reg = @"
+	execute "normal! vgvy"
 
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+	let l:pattern = escape(@", "\\/.*'$^~[]")
+	let l:pattern = substitute(l:pattern, "\n$", "", "")
 
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+	if a:direction == 'gv'
+		call CmdLine("Ack '" . l:pattern . "' " )
+	elseif a:direction == 'replace'
+		call CmdLine("%s" . '/'. l:pattern . '/')
+	endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+	let @/ = l:pattern
+	let @" = l:saved_reg
 endfunction
-
-
-
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -461,31 +682,41 @@ endfunction
 " => GUI related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
-if has("mac") || has("macunix")
-    set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
-elseif has("win16") || has("win32")
-    set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
-elseif has("gui_gtk2")
-    set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-elseif has("linux")
-    set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-elseif has("unix")
-    set gfn=Monospace\ 11
-endif
-
-" Disable scrollbars (real hackers don't use scrollbars for navigation!)
-set guioptions-=r
-set guioptions-=R
-set guioptions-=l
-set guioptions-=L
-
-" Colorscheme
-set background=dark
-
 try
-	colorscheme peaksea
+	if has("mac") || has("macunix")
+		set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+	elseif has("win16") || has("win32")
+		set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
+	elseif has("gui_gtk2")
+		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+	elseif has("linux")
+		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+	elseif has("unix")
+		set gfn=Monospace\ 11
+	endif
 catch
 endtry
+
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+	set guioptions-=m	" menu +/-.
+	set guioptions-=T	" tool bar +/-.
+	set guioptions-=e	" GUI tabs +/-.
+
+	" Disable scrollbars (real hackers don't use scrollbars for navigation!)
+	set guioptions-=r	" right-hand scrollbar.
+	set guioptions-=R	" right-hand scrollbar (vertically split).
+	set guioptions-=l	" left-hand scrollbar.
+	set guioptions-=L	" left-hand scrollbar (vertically split).
+	set guioptions-=b	" buttom (horizontal) scrollbar.
+
+	set t_Co=256
+	set guitablabel=%M\ %t
+
+	" Set highlight color. (override colorscheme settings)
+	highlight Search guibg=peru guifg=wheat
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -500,8 +731,8 @@ endtry
 "    means that you can undo even when you close a buffer/VIM
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 try
-    set undodir=~/.vim_runtime/temp_dirs/undodir
-    set undofile
+	set undodir=~/.vim_runtime/temp_dirs/undodir
+	set undofile
 catch
 endtry
 
@@ -515,9 +746,11 @@ cno $d e ~/Desktop/
 cno $j e ./
 cno $c e <C-\>eCurrentFileDir("e")<cr>
 
+
 " $q is super useful when browsing on the command line
 " it deletes everything until the last slash
 cno $q <C-\>eDeleteTillSlash()<cr>
+
 
 " Bash like keys for the command line
 cnoremap <C-A>		<Home>
@@ -526,6 +759,7 @@ cnoremap <C-K>		<C-U>
 
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
+
 
 " Map ½ to something useful
 map ½ $
@@ -542,6 +776,7 @@ vnoremap $3 <esc>`>a}<esc>`<i{<esc>
 vnoremap $$ <esc>`>a"<esc>`<i"<esc>
 vnoremap $q <esc>`>a'<esc>`<i'<esc>
 vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
 
 " Map auto complete of (, ", ', [
 inoremap $1 ()<esc>i
@@ -561,34 +796,79 @@ iab xdate <C-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+""
+" For C++
+"	https://vim.fandom.com/wiki/Using_vim_as_an_IDE_all_in_one
+"
+
+" Enable global scope search
+let OmniCpp_GlobalScopeSearch = 1
+
+" Enable namespace search
+" 0 = namespaces disabled
+" 1 = search namespaces in the current buffer
+" 2 = search namespaces in the current buffer and in included files
+let OmniCpp_NamespaceSearch = 0
+
+" Show all members
+" 0 = auto
+" 1 = always show all members
+let OmniCpp_DisplayMode = 0
+
+" Show scope in abbreviation
+" 0 = don't show scope in abbreviation
+" 1 = show scope in abbreviation and remove the last column
+let OmniCpp_ShowScopeInAbbr = 0
+
+" Show function parameters
+let OmniCpp_ShowPrototypeInAbbr = 1
+
+" Show access information in pop-up menu
+let OmniCpp_ShowAccess = 1
+
+" Auto complete after '.'
+let OmniCpp_MayCompleteDot = 1
+
+" Auto complete after '->'
+let OmniCpp_MayCompleteArrow = 1
+
+" Auto complete after '::'
+let OmniCpp_MayCompleteScope = 1
+
+" Don't select first item in pop-up menu
+let OmniCpp_SelectFirstItem = 0
+
+
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType cpp set omnifunc=cppcomplete#CompleteCPP
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+"autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 func! DeleteTillSlash()
-    let g:cmd = getcmdline()
+	let g:cmd = getcmdline()
 
-    if has("win16") || has("win32")
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-    else
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-    endif
+	if has("win16") || has("win32")
+		let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+	else
+		let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+	endif
 
-    if g:cmd == g:cmd_edited
-        if has("win16") || has("win32")
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-        else
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-        endif
-    endif
+	if g:cmd == g:cmd_edited
+		if has("win16") || has("win32")
+			let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+		else
+			let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+		endif
+	endif
 
-    return g:cmd_edited
+	return g:cmd_edited
 endfunc
 
 
 func! CurrentFileDir(cmd)
-    return a:cmd . " " . expand("%:p:h") . "/"
+	return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
