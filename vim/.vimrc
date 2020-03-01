@@ -44,6 +44,12 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " let g:powerline_pycmd="py3"
 
 
+""
+" vim-search-index
+"
+" https://github.com/google/vim-searchindex
+
+
 " *********************************************** "
 "                Editing behaviour                "
 " *********************************************** "
@@ -241,6 +247,12 @@ augroup END
 highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 
+" Show 'tab' and 'end of line' as CTRL-I is displayed.
+" Set the characters you want to use.
+set listchars=tab:»\ 
+set list
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -259,6 +271,13 @@ syntax enable
 " Enable 256 colors palette in Gnome Terminal
 if $COLORTERM == 'gnome-terminal'
 	set t_Co=256
+endif
+
+if &term =~ '256color'
+  " Disable Background Color Erase (BCE) so that color schemes
+  " ender properly when inside 256-color tmux and GNU screen.
+  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+  set t_ut=
 endif
 
 
