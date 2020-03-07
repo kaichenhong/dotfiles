@@ -10,7 +10,10 @@
 " *********************************************** "
 
 " Get the defaults that most user wants.
-source $VIMRUNTIME/defaults.vim
+try
+	source $VIMRUNTIME/defaults.vim
+catch
+endtry
 
 
 " Enable 256 colors in vim.
@@ -21,22 +24,29 @@ set t_Co=256
 "                Custom plugins                   "
 " *********************************************** "
 
-""
-" vim-airline settings.
+" ***   vim-airline   ***
 "
+" https://github.com/vim-airline/vim-airline
+" https://www.vim.org/scripts/script.php?script_id=4661
+"
+" ***   vim-airline-themes   ***
+"
+" https://github.com/vim-airline/vim-airline-themes
+"
+" Use powerline fonts.
 let g:airline_powerline_fonts=1
-
+" Tab setting.
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_nr = 1
+" Buffer setting.
 " let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-
+" Format setting.
 let g:ariline#extensions#tabline#formatter='unique_tail'
 
 
-""
-" Powerline settings, see [1] and [2].
+" ***   Powerline   ***
 "
 " [1] https://wiki.archlinux.org/index.php/Powerline
 " [2] https://powerline.readthedocs.io/en/master/overview.html
@@ -44,10 +54,14 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " let g:powerline_pycmd="py3"
 
 
-""
-" vim-search-index
+" ***   vim-search-index   ***
 "
 " https://github.com/google/vim-searchindex
+
+
+" ***   indentLine   ***
+"
+" https://github.com/Yggdroot/indentLine
 
 
 " *********************************************** "
@@ -250,6 +264,7 @@ highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
 " Show 'tab' and 'end of line' as CTRL-I is displayed.
 " Set the characters you want to use.
 set listchars=tab:»\ 
+" set listchars+=tab:»\ 
 set list
 
 
@@ -290,13 +305,36 @@ try
 	""
 	" Download colorscheme
 
+	" ***   peaksea   ***
+	"
+	" https://www.vim.org/scripts/script.php?script_id=760 
+	"
 	" colorscheme peaksea
+
+
+	" ***   mrkn256   ***
+	"
+	" https://github.com/mrkn/mrkn256.vim
+	"
 	" colorscheme mrkn256
 
-	" Color scheme --- hybrid
+
+	" ***   hybrid   ***
+	"
+	" https://github.com/w0ng/vim-hybrid
+	"
 	" let g:hybrid_custom_term_colors=1
-	let g:hybrid_reduced_contrast=1		" Remove this line if using the default palette.
-	colorscheme hybrid
+	" let g:hybrid_reduced_contrast=1	" Remove this line if using the default palette.
+	" colorscheme hybrid
+
+
+	" ***   gruvbox   ***
+	"
+	" https://github.com/morhetz/gruvbox
+	"
+	" Change dark mode contrast. Possible values are soft, medium, hard.
+	let g:gruvbox_contrast_dark='hard'
+	colorscheme gruvbox
 catch
 endtry
 
