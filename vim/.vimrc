@@ -334,6 +334,17 @@ try
 	"
 	" Change dark mode contrast. Possible values are soft, medium, hard.
 	let g:gruvbox_contrast_dark='hard'
+	"
+	" Fix airline issue. "buffers" in top bar is grey.
+	"
+	" https://github.com/morhetz/gruvbox/issues/250
+	"
+	" If on right.
+	autocmd VimEnter * hi! link airline_tablabel_right airline_tabtype
+	autocmd TerminalWinOpen * hi! link airline_tablabel_right airline_tabtype
+	" If on left.
+	" autocmd VimEnter * hi! link airline_tablabel airline_tabtype
+	" autocmd TerminalWinOpen * hi! link airline_tablabel airline_tabtype
 	colorscheme gruvbox
 catch
 endtry
