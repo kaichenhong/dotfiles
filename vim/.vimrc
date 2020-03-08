@@ -40,8 +40,10 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_nr = 1
 " Buffer setting.
-" let g:airline#extensions#tabline#buffer_nr_show = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
+"	buffer_nr_show : same number as ":buffers".
+"	buffer_idx_mode : On the contrary.
+let g:airline#extensions#tabline#buffer_nr_show = 1
+" let g:airline#extensions#tabline#buffer_idx_mode = 1
 " Format setting.
 let g:ariline#extensions#tabline#formatter='unique_tail'
 
@@ -509,7 +511,13 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 
 " Go to buffer by number
+"
+" https://vim.fandom.com/wiki/Easier_buffer_switching
+"
+" The :edit command can also be used to switch to a given buffer number
+" if the argument begins with #.
 nnoremap <Leader><tab> :e#<CR>
+" nnoremap <Leader><tab> :b#<CR>
 nnoremap <Leader>1 :bfirst<CR>
 nnoremap <Leader>2 :2b<CR>
 nnoremap <Leader>3 :3b<CR>
