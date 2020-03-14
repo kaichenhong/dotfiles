@@ -354,10 +354,14 @@ try
 	"
 	" If on right.
 	autocmd VimEnter * hi! link airline_tablabel_right airline_tabtype
-	autocmd TerminalWinOpen * hi! link airline_tablabel_right airline_tabtype
+	if exists("##TerminalWinOpen")
+		autocmd TerminalWinOpen * hi! link airline_tablabel_right airline_tabtype
+	endif
 	" If on left.
 	" autocmd VimEnter * hi! link airline_tablabel airline_tabtype
-	" autocmd TerminalWinOpen * hi! link airline_tablabel airline_tabtype
+	" if exists("##TerminalWinOpen")
+	" 	autocmd TerminalWinOpen * hi! link airline_tablabel airline_tabtype
+	" endif
 	colorscheme gruvbox
 catch
 endtry
