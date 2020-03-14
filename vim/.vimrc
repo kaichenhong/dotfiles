@@ -810,8 +810,15 @@ if has("gui_running")
 	set guioptions-=L	" left-hand scrollbar (vertically split).
 	set guioptions-=b	" buttom (horizontal) scrollbar.
 
+
 	set t_Co=256
 	set guitablabel=%M\ %t
+
+
+	" Window size settings
+	set lines=60
+	set columns=120
+
 
 	" Set highlight color. (override colorscheme settings)
 	highlight Search guibg=peru guifg=wheat
