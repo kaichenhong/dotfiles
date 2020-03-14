@@ -69,6 +69,13 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " https://github.com/Yggdroot/indentLine
 
 
+" ***   vim-polyglot   ***
+"
+" https://github.com/sheerun/vim-polyglot
+"
+" A lot of languages syntax highlight settings for use.
+
+
 " ***   vim-cpp-enhanced-highlight   ***
 "
 " https://github.com/octol/vim-cpp-enhanced-highlight
@@ -96,6 +103,7 @@ let g:cpp_concepts_highlight = 1
 " *********************************************** "
 set clipboard^=unnamed,unnamedplus
 
+
 " For linux kernel coding style.
 "   Highlight 81th column with vertical line.
 set colorcolumn=81
@@ -104,13 +112,17 @@ highlight ColorColumn ctermbg=Black ctermfg=DarkRed
 
 
 " Highlight trailing spaces
+"
+" https://vim.fandom.com/wiki/Highlight_unwanted_spaces
+"
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s+$/
-autocmd BufWinLeave * call clearmatches()
-
+if version >= 702
+	autocmd BufWinLeave * call clearmatches()
+endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -291,12 +303,12 @@ highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
 " Show 'tab' and 'end of line' as CTRL-I is displayed.
 " Set the characters you want to use.
 set listchars=tab:»\ 
-" set listchars+=tab:»\ 
+" set listchars+=tab:»\
 set list
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts 
+" => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 "   Make source code looks more colorfull, it will call <filetype on>
@@ -306,6 +318,7 @@ set list
 "       before or after using this command.
 "       If you want Vim to overrule your settings with the defaults,
 "       use: "syntax on"
+"
 " syntax on
 syntax enable
 
@@ -316,10 +329,10 @@ if $COLORTERM == 'gnome-terminal'
 endif
 
 if &term =~ '256color'
-  " Disable Background Color Erase (BCE) so that color schemes
-  " ender properly when inside 256-color tmux and GNU screen.
-  " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
-  set t_ut=
+	" Disable Background Color Erase (BCE) so that color schemes
+	" ender properly when inside 256-color tmux and GNU screen.
+	" see also http://snk.tuxfamily.org/log/vim-256color-bce.html
+	set t_ut=
 endif
 
 
@@ -329,12 +342,13 @@ set background=dark
 try
 	colorscheme desert
 
-	""
-	" Download colorscheme
+	""""""""""""""""""""""""
+	" Download colorscheme "
+	""""""""""""""""""""""""
 
 	" ***   peaksea   ***
 	"
-	" https://www.vim.org/scripts/script.php?script_id=760 
+	" https://www.vim.org/scripts/script.php?script_id=760
 	"
 	" colorscheme peaksea
 
@@ -560,7 +574,7 @@ nnoremap <Leader><tab> :e#<CR>
 " nnoremap <Leader><tab> :b#<CR>
 nnoremap <Leader>` :bprev<CR>
 nnoremap <Leader>- :bnext<CR>
-nnoremap <Leader>= :buffers<CR>:b 
+nnoremap <Leader>= :buffers<CR>:b
 " nnoremap <Leader>1 :bfirst<CR>
 " nnoremap <Leader>2 :2b<CR>
 " nnoremap <Leader>3 :3b<CR>
@@ -651,6 +665,9 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 
 
 " Delete trailing white space on save, useful for some filetypes ;)
+"
+" https://vim.fandom.com/wiki/Remove_unwanted_spaces
+"
 fun! CleanExtraSpaces()
 	let save_cursor = getpos(".")
 	let old_query = getreg('/')
@@ -665,6 +682,7 @@ if has("autocmd")
 
 	" For specify a particular filetype use
 	autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+	autocmd BufWritePre *.h,*.hpp :call CleanExtraSpaces()
 	autocmd FileType c,cpp autocmd BufWritePre <buffer> :call CleanExtraSpaces()
 endif
 
