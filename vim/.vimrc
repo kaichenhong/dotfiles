@@ -665,7 +665,7 @@ if has("autocmd")
 
 	" For specify a particular filetype use
 	autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
-	autocmd FileType c,cpp,java,php,vim autocmd BufWritePre :call CleanExtraSpaces()
+	autocmd FileType c,cpp autocmd BufWritePre <buffer> :call CleanExtraSpaces()
 endif
 
 
