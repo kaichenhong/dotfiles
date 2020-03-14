@@ -335,7 +335,18 @@ try
 	" https://github.com/morhetz/gruvbox
 	"
 	" Change dark mode contrast. Possible values are soft, medium, hard.
-	let g:gruvbox_contrast_dark='hard'
+	let g:gruvbox_contrast_dark='medium'
+	"
+	" Disable italic text in GUI mode.
+	if has("gui_running")
+		let g:gruvbox_italic=0
+	endif
+	"
+	" Extra highlight strings.
+	let g:gruvbox_improved_strings=1
+	"
+	" Extra highlight warnings.
+	let g:gruvbox_improved_warnings=1
 	"
 	" Fix airline issue. "buffers" in top bar is grey.
 	"
