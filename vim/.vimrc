@@ -35,15 +35,18 @@ set t_Co=256
 "
 " Use powerline fonts.
 let g:airline_powerline_fonts=1
+"
 " Tab setting.
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#tab_nr_type = 1
 let g:airline#extensions#tabline#show_tab_nr = 1
+"
 " Buffer setting.
 "	buffer_nr_show : same number as ":buffers".
 "	buffer_idx_mode : On the contrary.
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#buffer_idx_mode = 1
+"
 " Format setting.
 let g:ariline#extensions#tabline#formatter='unique_tail'
 
@@ -64,6 +67,28 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " ***   indentLine   ***
 "
 " https://github.com/Yggdroot/indentLine
+
+
+" ***   vim-cpp-enhanced-highlight   ***
+"
+" https://github.com/octol/vim-cpp-enhanced-highlight
+"
+let g:cpp_class_scope_highlight = 1
+let g:cpp_member_variable_highlight = 1
+let g:cpp_class_decl_highlight = 1
+let g:cpp_posix_standard = 1
+"
+" There are two ways to highlight template functions.
+"	Bellow first works in most cases, but can be a little slow on large files.
+"	Second is a faster implementation but has some corner cases where it doesn't work.
+" let g:cpp_experimental_simple_template_highlight = 1
+let g:cpp_experimental_template_highlight = 1
+"
+" Highlighting of library concepts is enabled by
+let g:cpp_concepts_highlight = 1
+"
+" Highlighting of user defined functions can be disabled by
+" let g:cpp_no_function_highlight = 1
 
 
 " *********************************************** "
