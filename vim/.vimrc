@@ -333,6 +333,12 @@ if &term =~ '256color'
 	" ender properly when inside 256-color tmux and GNU screen.
 	" see also http://snk.tuxfamily.org/log/vim-256color-bce.html
 	set t_ut=
+
+
+	" Use VIM true color support
+	if has("termguicolors")
+		" set termguicolors
+	endif
 endif
 
 
@@ -525,6 +531,7 @@ map <leader>bd :Bclose<cr>:tabclose<cr>gT
 map <leader>ba :bufdo bd<cr>
 
 
+" Go to buffers (also see "Go to buffer by number" for detail)
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
 
