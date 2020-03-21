@@ -302,9 +302,13 @@ highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
 
 " Show 'tab' and 'end of line' as CTRL-I is displayed.
 " Set the characters you want to use.
-set listchars=tab:»\ 
-" set listchars+=tab:»\
-set list
+"
+" In GVim seems has some bug?
+if !has("gui_running")
+	set listchars=tab:»\ 
+	" set listchars+=tab:»\
+	set list
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -850,20 +854,24 @@ endfunction
 " => GUI related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set font according to system
-try
-	if has("mac") || has("macunix")
-		set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
-	elseif has("win16") || has("win32")
-		set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
-	elseif has("gui_gtk2")
-		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-	elseif has("linux")
-		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
-	elseif has("unix")
-		set gfn=Monospace\ 11
-	endif
-catch
-endtry
+" try
+" 	if has("mac") || has("macunix")
+" 		set gfn=IBM\ Plex\ Mono:h14,Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+" 	elseif has("win16") || has("win32")
+" 		set gfn=IBM\ Plex\ Mono:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
+" 	elseif has("gui_gtk2")
+" 		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+" 	elseif has("linux")
+" 		set gfn=IBM\ Plex\ Mono\ 14,:Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+" 	elseif has("unix")
+" 		set gfn=Monospace\ 11
+" 	endif
+" catch
+" endtry
+if has("gui_running")
+	set guifont=DejaVu_Sans_Mono_for_Powerline:h9:cANSI:qDRAFT
+	set guifont=MesloLGS_NF:h9:cANSI:qDRAFT
+endif
 
 
 " Set extra options when running in GUI mode
@@ -885,7 +893,7 @@ if has("gui_running")
 
 
 	" Window size settings
-	set lines=60
+	set lines=70
 	set columns=120
 
 
