@@ -98,6 +98,15 @@ let g:cpp_concepts_highlight = 1
 " let g:cpp_no_function_highlight = 1
 
 
+" ***   vim-linux-coding-style   ***
+"
+" https://github.com/vivien/vim-linux-coding-style
+"
+let g:linuxsty_patterns = [ "/usr/src/", "/linux", "/kernel" ]
+
+nnoremap <silent> <leader>a :LinuxCodingStyle<cr>
+
+
 " *********************************************** "
 "                Editing behaviour                "
 " *********************************************** "
