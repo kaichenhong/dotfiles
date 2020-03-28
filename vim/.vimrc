@@ -489,6 +489,13 @@ set wrap "Wrap lines
 "	default: completeopt=menu,preview
 "		https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
 set completeopt=longest,menuone
+"
+"	default: complete=.,w,b,u,t,i
+"		https://vi.stackexchange.com/questions/11349/ctrl-n-completion-takes-a-long-time-for-scanning-included-file
+"		https://stackoverflow.com/questions/2169645/vims-autocomplete-is-excruciatingly-slow/2460593
+"
+"	remove 'scan current and included files' for speed up
+set complete-=i
 
 " inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " inoremap <expr> <C-n> pumvisible() ? '<C-n>' :
