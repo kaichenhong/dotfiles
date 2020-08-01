@@ -23,6 +23,12 @@ set t_Co=256
 " *********************************************** "
 "                    Vundle                       "
 " *********************************************** "
+"
+" https://github.com/VundleVim/Vundle.vim
+" 
+" Set up Vundle 
+"	git clone to ~/.vim/bundle/Vundle.vim
+
 
 " be iMproved, required
 set nocompatible
