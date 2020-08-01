@@ -2,6 +2,15 @@
 # ~/.bashrc
 #
 
+# Source global definitions
+if [ -f /etc/bashrc ];then
+	. /etc/bashrc
+fi
+
+#
+# User sepcific
+#
+
 [[ $- != *i* ]] && return
 
 colors() {
@@ -31,6 +40,7 @@ colors() {
 	done
 }
 
+# bash-completion
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
 # Change the window title of X terminals
@@ -70,21 +80,26 @@ if ${use_color} ; then
 	fi
 
 	if [[ ${EUID} == 0 ]] ; then
-		PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
+		# PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
+		PS1='\[\033[01;32m\][\[\033[01;36m\]\d \t \[\033[01;33m\]\h\[\033[01;35m\] \w\[\033[01;32m\]]\$\[\033[00m\] '
 	else
-		PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+		# PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
+		PS1='\[\033[01;32m\][\[\033[01;36m\]\d \t \[\033[01;33m\]\h\[\033[01;35m\] \w\[\033[01;32m\]]\$\[\033[00m\] '
 	fi
 
 	alias ls='ls --color=auto'
+	# alias ll="ls -lah --color=auto --time-style=+%F"
 	alias grep='grep --colour=auto'
 	alias egrep='egrep --colour=auto'
 	alias fgrep='fgrep --colour=auto'
 else
 	if [[ ${EUID} == 0 ]] ; then
 		# show root@ when we don't have colors
-		PS1='\u@\h \W \$ '
+		# PS1='\u@\h \W \$ '
+		PS1='\d \t \u@\h \W \$ '
 	else
-		PS1='\u@\h \w \$ '
+		# PS1='\u@\h \w \$ '
+		PS1='\d \t \u@\h \W \$ '
 	fi
 fi
 
@@ -95,6 +110,18 @@ alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
+
+# Path alias
+# Navigate up the directory effectively
+alias ..="cd .."
+alias ..2="cd ../.."
+alias ..3="cd ../../.."
+alias ..4="cd ../../../.."
+alias ..5="cd ../../../../.."
+alias ..6="cd ../../../../../.."
+alias ..7="cd ../../../../../../.."
+alias ..8="cd ../../../../../../../.."
+alias ..9="cd ../../../../../../../../.."
 
 xhost +local:root > /dev/null 2>&1
 
@@ -112,6 +139,9 @@ shopt -s expand_aliases
 
 # Enable history appending instead of overwriting.  #139609
 shopt -s histappend
+
+# auto "cd" when entering just a path
+shopt -s autocd
 
 #
 # # ex - archive extractor
@@ -143,7 +173,10 @@ export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1
 
 # powerline, see [1].
 # [1] https://wiki.archlinux.org/index.php/Powerline
-powerline-daemon -q
-POWERLINE_BASH_CONTINUATION=1
-POWERLINE_BASH_SELECT=1
-. /usr/share/powerline/bindings/bash/powerline.sh
+# powerline-daemon -q
+# POWERLINE_BASH_CONTINUATION=1
+# POWERLINE_BASH_SELECT=1
+# . /usr/share/powerline/bindings/bash/powerline.sh
+
+# For terminal
+export TERM=xterm-256color
