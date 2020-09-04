@@ -3,7 +3,7 @@
 #
 
 # Source global definitions
-if [ -f /etc/bashrc ];then
+if [ -f /etc/bashrc ] ; then
 	. /etc/bashrc
 fi
 
@@ -53,6 +53,22 @@ case ${TERM} in
 		;;
 esac
 
+# bash completion settings (actually, these are readline settings)
+bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+bind "set bell-style none" # no bell
+bind "set show-all-if-ambiguous On" # show list automatically, without double tab
+
+# Shorter history
+# to stop logging of repeated identical commands
+export HISTCONTROL=ignoredups
+
+# History completion
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
+# Enable history appending instead of overwriting.  #139609
+shopt -s histappend
+
 use_color=true
 
 # Set colorful PS1 only on colorful terminals.
@@ -88,7 +104,7 @@ if ${use_color} ; then
 	fi
 
 	alias ls='ls --color=auto'
-	# alias ll="ls -lah --color=auto --time-style=+%F"
+	alias ll="ls -lah --color=auto --time-style=+%F"
 	alias grep='grep --colour=auto'
 	alias egrep='egrep --colour=auto'
 	alias fgrep='fgrep --colour=auto'
@@ -106,8 +122,15 @@ fi
 unset use_color safe_term match_lhs sh
 
 alias cp="cp -i"                          # confirm before overwriting something
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
+alias mv='mv -i'                          # confirm before overwriting something
+alias rm="rm -I --preserve-root"
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+alias mkdir='mkdir -p'                    # make directory and any parent directories needed
+alias df='df -Tha --total'                # human-readable sizes
+alias du="du -ach | sort -h"              # human-readable sizes
+alias free='free -mth'                    # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
 
@@ -125,6 +148,8 @@ alias ..9="cd ../../../../../../../../.."
 
 xhost +local:root > /dev/null 2>&1
 
+# Customize per-command
+# complete command names and file names with -cf
 complete -cf sudo
 
 # Bash won't get SIGWINCH if another process is in the foreground.
@@ -135,10 +160,10 @@ shopt -s checkwinsize
 
 shopt -s expand_aliases
 
-# export QT_SELECT=4
+# Shell and environment variables
+export VARIABLE=content
 
-# Enable history appending instead of overwriting.  #139609
-shopt -s histappend
+# export QT_SELECT=4
 
 # auto "cd" when entering just a path
 shopt -s autocd
@@ -168,6 +193,12 @@ ex ()
   fi
 }
 
+# For terminal
+# force TERM if truecolor
+if [[ ! -z $COLORTERM ]] && [[ "$COLORTERM" == "truecolor" ]] ; then
+	export TERM=xterm-256color
+fi
+
 # better yaourt colors
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
 
@@ -177,6 +208,3 @@ export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1
 # POWERLINE_BASH_CONTINUATION=1
 # POWERLINE_BASH_SELECT=1
 # . /usr/share/powerline/bindings/bash/powerline.sh
-
-# For terminal
-export TERM=xterm-256color
