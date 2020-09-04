@@ -27,7 +27,10 @@ set t_Co=256
 " https://github.com/VundleVim/Vundle.vim
 " 
 " Set up Vundle 
-"	git clone to ~/.vim/bundle/Vundle.vim
+"   git clone "http:..." ~/.vim/bundle/Vundle.vim
+"
+" windows git bash set bellow command first
+"   git config --global core.autocrlf false
 
 
 " be iMproved, required
@@ -40,12 +43,14 @@ filetype off
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
-set rtp+=L:/.vim/bundle/Vundle.vim
+" set rtp+=~/vimfiles/bundle/Vundle.vim
+" set rtp+=L:/.vim/bundle/Vundle.vim
 
 
 call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 " call vundle#begin('~/some/path/here')
+" call vundle#begin('~/vimfiles/bundle')
 " call vundle#begin('L:/.vim/bundle')
 
 
@@ -58,7 +63,9 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'majutsushi/tagbar'
 Plugin 'google/vim-searchindex'
+Plugin 'Yggdroot/LeaderF'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'vivien/vim-linux-coding-style'
 Plugin 'morhetz/gruvbox'
@@ -132,6 +139,12 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " let g:powerline_pycmd="py3"
 
 
+" ***   tagbar   ***
+"
+" https://github.com/majutsushi/tagbar
+nmap <F8> :TagbarToggle<CR>
+
+
 " ***   vim-search-index   ***
 "
 " https://github.com/google/vim-searchindex
@@ -140,6 +153,43 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 " ***   indentLine   ***
 "
 " https://github.com/Yggdroot/indentLine
+
+
+" ***   LeaderF   ***
+"
+" https://github.com/Yggdroot/LeaderF
+"
+" don't show the help in normal mode
+let g:Lf_HideHelp = 1
+let g:Lf_UseCache = 0
+let g:Lf_UseVersionControlTool = 0
+let g:Lf_IgnoreCurrentBufferName = 1
+" popup mode
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_PreviewInPopup = 1
+let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+let g:Lf_PreviewResult = {'Function': 0, 'BufTag': 0 }
+
+let g:Lf_ShortcutF = "<leader>ff"
+noremap <leader>fb :<C-U><C-R>=printf("Leaderf buffer %s", "")<CR><CR>
+noremap <leader>fm :<C-U><C-R>=printf("Leaderf mru %s", "")<CR><CR>
+noremap <leader>ft :<C-U><C-R>=printf("Leaderf bufTag %s", "")<CR><CR>
+noremap <leader>fl :<C-U><C-R>=printf("Leaderf line %s", "")<CR><CR>
+
+noremap <C-B> :<C-U><C-R>=printf("Leaderf! rg --current-buffer -e %s ", expand("<cword>"))<CR>
+noremap <C-F> :<C-U><C-R>=printf("Leaderf! rg -e %s ", expand("<cword>"))<CR>
+" search visually selected text literally
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+noremap go :<C-U>Leaderf! rg --recall<CR>
+
+" should use `Leaderf gtags --update` first
+let g:Lf_GtagsAutoGenerate = 0
+let g:Lf_Gtagslabel = 'native-pygments'
+noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
 
 
 " ***   vim-polyglot   ***
@@ -1002,11 +1052,21 @@ endif
 " => Turn persistent undo on
 "    means that you can undo even when you close a buffer/VIM
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-try
-	set undodir=~/.vim_runtime/temp_dirs/undodir
-	set undofile
-catch
-endtry
+" try
+"	set undodir=~/.vim_runtime/temp_dirs/undodir
+"	set undofile
+" catch
+" endtry
+
+
+if !isdirectory($HOME."/.vim")
+    call mkdir($HOME."/.vim", "", 0770)
+endif
+if !isdirectory($HOME."/.vim/undo-dir")
+    call mkdir($HOME."/.vim/undo-dir", "", 0700)
+endif
+set undodir=~/.vim/undo-dir
+set undofile
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
