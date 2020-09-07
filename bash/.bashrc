@@ -43,6 +43,12 @@ colors() {
 # bash-completion
 [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
+# bash completion settings (actually, these are readline settings)
+bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
+bind "set bell-style none" # no bell
+bind "set show-all-if-ambiguous On" # show list automatically, without double tab
+bind 'TAB:menu-complete'
+
 # Change the window title of X terminals
 case ${TERM} in
 	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
@@ -52,11 +58,6 @@ case ${TERM} in
 		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
 		;;
 esac
-
-# bash completion settings (actually, these are readline settings)
-bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
-bind "set bell-style none" # no bell
-bind "set show-all-if-ambiguous On" # show list automatically, without double tab
 
 # Shorter history
 # to stop logging of repeated identical commands
@@ -100,11 +101,11 @@ if ${use_color} ; then
 		PS1='\[\033[01;32m\][\[\033[01;36m\]\d \t \[\033[01;33m\]\h\[\033[01;35m\] \w\[\033[01;32m\]]\$\[\033[00m\] '
 	else
 		# PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
-		PS1='\[\033[01;32m\][\[\033[01;36m\]\d \t \[\033[01;33m\]\h\[\033[01;35m\] \w\[\033[01;32m\]]\$\[\033[00m\] '
+		PS1='\[\033[01;32m\][\[\033[01;36m\]\d \t \[\033[01;33m\]\u@\h\[\033[01;35m\] \w\[\033[01;32m\]]\$\[\033[00m\] '
 	fi
 
 	alias ls='ls --color=auto'
-	alias ll="ls -lah --color=auto --time-style=+%F"
+	alias ll='ls -lah --color=auto --time-style=+%F'
 	alias grep='grep --colour=auto'
 	alias egrep='egrep --colour=auto'
 	alias fgrep='fgrep --colour=auto'
@@ -195,9 +196,10 @@ ex ()
 
 # For terminal
 # force TERM if truecolor
-if [[ ! -z $COLORTERM ]] && [[ "$COLORTERM" == "truecolor" ]] ; then
-	export TERM=xterm-256color
-fi
+# if [[ ! -z $COLORTERM ]] && [[ "$COLORTERM" == "truecolor" ]] ; then
+#         export TERM=xterm-256color
+# fi
+export TERM=xterm-256color
 
 # better yaourt colors
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
