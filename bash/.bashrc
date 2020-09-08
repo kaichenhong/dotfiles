@@ -147,6 +147,16 @@ alias ..7="cd ../../../../../../.."
 alias ..8="cd ../../../../../../../.."
 alias ..9="cd ../../../../../../../../.."
 
+# General aliases file
+bash_aliases=~/.bash_aliases
+if [ -f $bash_aliases ] ; then
+        . $bash_aliases
+fi
+
+if [[ -f $HOME/.aliases ]]; then
+        source $HOME/.aliases
+fi
+
 xhost +local:root > /dev/null 2>&1
 
 # Customize per-command
@@ -196,10 +206,9 @@ ex ()
 
 # For terminal
 # force TERM if truecolor
-# if [[ ! -z $COLORTERM ]] && [[ "$COLORTERM" == "truecolor" ]] ; then
-#         export TERM=xterm-256color
-# fi
-export TERM=xterm-256color
+if [[ ! -z $COLORTERM ]] && [[ "$COLORTERM" == "truecolor" ]] ; then
+        export TERM=xterm-256color
+fi
 
 # better yaourt colors
 export YAOURT_COLORS="nb=1:pkg=1:ver=1;32:lver=1;45:installed=1;42:grp=1;34:od=1;41;5:votes=1;44:dsc=0:other=1;35"
