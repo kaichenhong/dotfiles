@@ -47,7 +47,8 @@ colors() {
 bind "set completion-ignore-case on" # note: bind used instead of sticking these in .inputrc
 bind "set bell-style none" # no bell
 bind "set show-all-if-ambiguous On" # show list automatically, without double tab
-bind 'TAB:menu-complete'
+bind '"\e[Z":menu-complete' # shift+tab
+bind 'TAB:complete' # default tab
 
 # Change the window title of X terminals
 case ${TERM} in
@@ -134,6 +135,7 @@ alias du="du -ach | sort -h"              # human-readable sizes
 alias free='free -mth'                    # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
+alias rgf='rg --files | rg'               # ripgrep search by filenames
 
 # Path alias
 # Navigate up the directory effectively
