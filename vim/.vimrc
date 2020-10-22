@@ -143,6 +143,9 @@ let g:ariline#extensions#tabline#formatter='unique_tail'
 "
 " https://github.com/majutsushi/tagbar
 nmap <F8> :TagbarToggle<CR>
+"
+" the cursor will move to the Tagbar window when it is opened.
+let g:tagbar_autofocus = 1
 
 
 " ***   vim-search-index   ***
