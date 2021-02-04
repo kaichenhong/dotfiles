@@ -837,6 +837,10 @@ if has("autocmd")
 	autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
 	autocmd BufWritePre *.h,*.hpp :call CleanExtraSpaces()
 	autocmd FileType c,cpp autocmd BufWritePre <buffer> :call CleanExtraSpaces()
+	
+	" For git show '\ No newline at end of file' message
+	autocmd BufWritePre * :set binary | set noeol
+	autocmd BufWritePost * :set nobinary | set eol
 endif
 
 
