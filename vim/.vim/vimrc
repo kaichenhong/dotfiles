@@ -1,0 +1,456 @@
+" Fundamentals "{{{
+" -----------------------------------------------------------------------------
+
+" Basic layout / folders
+" (home, backup, undo, swap, autoload, plugin, after/plugin)
+if !isdirectory($HOME."/.vim")
+        call mkdir($HOME."/.vim", "", 0770)
+endif
+" if !isdirectory($HOME."/.vim/backup")
+"       call mkdir($HOME."/.vim/backup", "", 0700)
+" endif
+if !isdirectory($HOME."/.vim/undo")
+        call mkdir($HOME."/.vim/undo", "", 0700)
+endif
+" if !isdirectory($HOME."/.vim/swap")
+"       call mkdir($HOME."/.vim/swap", "", 0700)
+" endif
+if !isdirectory($HOME."/.vim/autoload")
+        call mkdir($HOME."/.vim/autoload", "", 0700)
+endif
+if !isdirectory($HOME."/.vim/plugin")
+        call mkdir($HOME."/.vim/plugin", "", 0700)
+endif
+if !isdirectory($HOME."/.vim/after")
+        call mkdir($HOME."/.vim/after", "", 0700)
+
+        if !isdirectory($HOME."/.vim/after/plugin")
+                call mkdir($HOME."/.vim/after/plugin", "", 0700)
+        endif
+endif
+
+
+" With a map leader it's possible to do extra key combinations
+let mapleader = ","
+map <space> ,
+
+
+" Enable 256 colors palette
+set t_Co=256
+
+
+" Accessing the system clipboard
+set clipboard^=unnamed,unnamedplus
+
+
+" These are neovim default settings
+if !has('nvim')
+
+        " Enable syntax highlighting
+        if !exists("g:syntax_on")
+            syntax enable
+        endif
+
+
+        " Enable filetype plugins
+        filetype plugin on
+        filetype indent on
+
+
+        " Enable auto indent
+        set autoindent
+
+
+        " Set to auto read when a file is changed from the outside
+        set autoread
+        au FocusGained,BufEnter * checktime
+
+
+        " Defaults to "dark" (unless set automatically by the terminal/UI)
+        set background=dark
+
+
+        " Defaults to "indent,eol,start"
+        set backspace=eol,start,indent
+
+
+        " No annoying sound on errors
+        set noerrorbells
+        set novisualbell
+        set t_vb=
+
+
+        " Compatible is always disabled
+        set nocompatible
+
+
+        " Auto complete excludes "i"
+        "       default: complete=.,w,b,u,t,i
+        "               https://vi.stackexchange.com/questions/11349/ctrl-n-completion-takes-a-long-time-for-scanning-included-file
+        "               https://stackoverflow.com/questions/2169645/vims-autocomplete-is-excruciatingly-slow/2460593
+        "
+        "       remove 'scan current and included files' for speed up
+        set complete-=i
+
+
+        " Neovim default is set to "lastline,msgsep"
+        set display+=lastline
+
+
+        " Set utf8 as standard encoding
+        set encoding=utf8
+
+
+        " defaults to "tcqj"
+        set formatoptions=tcqj 
+
+
+        " Set to disable
+        set nofsync
+
+
+        " A buffer becomes hidden when it is abandoned
+        set hidden
+
+
+        " Sets how many lines of history VIM has to remember (10000 the maximum)
+        set history=10000
+
+
+        " Highlight search results
+        set hlsearch
+
+
+        " Makes search act like search in modern browsers
+        set incsearch
+
+
+        " Set to disabled
+        set nojoinspaces
+
+
+        " Always show the status line
+        set laststatus=2
+
+
+        " Show 'tab' and 'end of line' as CTRL-I is displayed
+        set listchars=tab:\|\ ,trail:-,nbsp:+
+
+
+        " Always show current position
+        set ruler
+
+
+        " Includes "unix,slash", excludes "options"
+        set sessionoptions+=unix,slash
+        set sessionoptions-=options
+
+
+        " Includes "F", excludes "S"
+        set shortmess+=F
+        set shortmess-=S
+
+
+        " Set to enable
+        set showcmd
+
+
+        " Defaults to 1
+        set sidescroll=1
+
+
+        " Set to enable for being smart when using tabs
+        set smarttab
+
+
+        " Set to disable
+        set nostartofline
+
+
+        " Defaults to "uselast"
+        set switchbuf=uselast
+
+
+        " Defaults to 50
+        set tabpagemax=50
+
+
+        " Defaults to 50
+        set ttimeoutlen=50
+
+
+        " Includes "unix,slash", excludes "options"
+        set viewoptions+=unix,slash
+        set viewoptions-=options
+
+
+        " Includes "!"
+        set viminfo+=!
+
+
+        " Turn on the Wild menu
+        set wildmenu
+
+
+        " Defaults to "tagfile"
+        set wildoptions=tagfile
+
+
+        " Defaults to load matchit.vim
+        runtime macros/matchit.vim
+
+endif " !nvim
+
+
+" Set standard file type
+set fileformats=unix,dos,mac
+
+
+" Set smart indent
+set smartindent
+
+
+" Tab (expandtab / noexpandtab), behavior
+set noexpandtab
+" set tabstop=4
+" set softtabstop=4
+" set shiftwidth=0
+
+
+" Scrolling (Set 7 lines to the cursor - when moving vertically using j/k)
+set scrolloff=7
+
+
+" Searching
+set ignorecase
+set smartcase
+set magic " for regular expressions (default is enable)
+
+
+" Matching (Show matching brackets when text indicator is over them)
+set showmatch
+set matchtime=1 " How many tenths of a second to blink when matching brackets
+
+
+" Line number
+" Show line numbers (hybrid), and do some highlight settings
+set number relativenumber
+
+augroup numbertoggle
+        autocmd!
+        autocmd BufEnter,FocusGained,InsertLeave,WinEnter * set number relativenumber
+        autocmd BufLeave,FocusLost,InsertEnter,WinLeave   * if &number | set norelativenumber | endif
+augroup END
+
+
+" Wild menu ignore some files
+set wildignore=*.o,*~,*.pyc
+if has("win16") || has("win32") || has("win64")
+        set wildignore+=.git\*,.hg\*,.svn\*,
+else
+        set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+
+" Let ":find" command is recursive - search down into subfolders
+set path+=**
+
+
+" Set to 500
+set timeoutlen=500
+
+
+" Automatically wrap left and right
+set whichwrap+=<,>,h,l,[,]
+
+
+" Auto complete options
+"       default: completeopt=menu,preview
+"               https://vim.fandom.com/wiki/Make_Vim_completion_popup_menu_work_just_like_in_an_IDE
+set completeopt=longest,menuone
+
+
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowb
+set noswapfile
+
+
+" Turn persistent undo on (means that you can undo even when you close a buffer/VIM)
+set undodir=~/.vim/undo
+set undofile
+
+
+" Return to last edit position when opening files (You want this!)
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
+" Highlights "{{{
+" -----------------------------------------------------------------------------
+" *cterm-colors*
+"	    NR-16   NR-8    COLOR NAME
+"	    0	    0	    Black
+"	    1	    4	    DarkBlue
+"	    2	    2	    DarkGreen
+"	    3	    6	    DarkCyan
+"	    4	    1	    DarkRed
+"	    5	    5	    DarkMagenta
+"	    6	    3	    Brown, DarkYellow
+"	    7	    7	    LightGray, LightGrey, Gray, Grey
+"	    8	    0*	    DarkGray, DarkGrey
+"	    9	    4*	    Blue, LightBlue
+"	    10	    2*	    Green, LightGreen
+"	    11	    6*	    Cyan, LightCyan
+"	    12	    1*	    Red, LightRed
+"	    13	    5*	    Magenta, LightMagenta
+"	    14	    3*	    Yellow, LightYellow
+"	    15	    7*	    White
+
+" Searching highlight color  (override colorscheme settings)
+highlight Search cterm=NONE ctermfg=Grey ctermbg=Blue
+
+
+" Line number
+highlight LineNr cterm=bold ctermfg=DarkGrey ctermbg=NONE
+
+
+" Cursorline
+set cursorline
+" highlight CursorLine term=NONE cterm=NONE gui=NONE
+" highlight CursorLine ctermbg=darkred ctermfg=white guibg=darkgreen guifg=white
+" highlight Visual cterm=NONE ctermbg=236 ctermfg=NONE guibg=Grey40
+
+
+" Cursorcolumn
+set cursorcolumn
+" highlight CursorColumn term=NONE cterm=NONE gui=NONE
+" highlight CursorLine ctermbg=darkred ctermfg=white guibg=darkgreen guifg=white
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
+" GUI related "{{{
+" -----------------------------------------------------------------------------
+" *gui-colors*
+"           Red         LightRed        DarkRed
+"	    Green       LightGreen      DarkGreen       SeaGreen
+"	    Blue        LightBlue       DarkBlue        SlateBlue
+"	    Cyan        LightCyan       DarkCyan
+"	    Magenta     LightMagenta    DarkMagenta
+"	    Yellow      LightYellow     Brown           DarkYellow
+"	    Gray        LightGray       DarkGray
+"	    Black       White
+"	    Orange      Purple          Violet
+
+if has("gui_running")
+
+        " Avoid garbled characters in Chinese language windows OS
+        " let $LANG='en'
+        " set langmenu=en
+        source $VIMRUNTIME/delmenu.vim
+        source $VIMRUNTIME/menu.vim
+
+
+        set guioptions-=m       " menu +/-.
+        set guioptions-=T       " tool bar +/-.
+        set guioptions-=e       " GUI tabs +/-.
+
+        " Disable scrollbars (real hackers don't use scrollbars for navigation!)
+        set guioptions-=r       " right-hand scrollbar.
+        set guioptions-=R       " right-hand scrollbar (vertically split).
+        set guioptions-=l       " left-hand scrollbar.
+        set guioptions-=L       " left-hand scrollbar (vertically split).
+        set guioptions-=b       " buttom (horizontal) scrollbar.
+
+
+        set t_Co=256
+        set guitablabel=%M\ %t
+
+
+        " Window size settings
+        set lines=70
+        set columns=120
+
+
+        " Set highlight color. (override colorscheme settings)
+        highlight Search guibg=peru guifg=wheat
+
+endif
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+" Additionals "{{{
+" -----------------------------------------------------------------------------
+
+if has('cscope')
+        set cscopetag cscopeverbose
+
+        if has('quickfix')
+                set cscopequickfix=s-,c-,d-,i-,t-,e-
+        endif
+
+        cnoreabbrev csa cs add
+        cnoreabbrev csf cs find
+        cnoreabbrev csk cs kill
+        cnoreabbrev csr cs reset
+        cnoreabbrev css cs show
+        cnoreabbrev csh cs help
+
+        command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/src
+endif
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
+" Imports / Sources "{{{
+" -----------------------------------------------------------------------------
+
+try
+        " Import key mappings
+        runtime maps.vim
+catch
+        echo "runtime maps.vim failed"
+endtry
+
+
+try
+        " Import some functions
+        runtime func.vim
+catch
+        echo "runtime func.vim failed"
+endtry
+
+
+try
+        " Import plugin
+        runtime plug.vim
+catch
+        echo "runtime plug.vim failed"
+endtry
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
