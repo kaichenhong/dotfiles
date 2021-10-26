@@ -30,6 +30,14 @@ if !isdirectory($HOME."/.vim/after")
 endif
 
 
+" Import functions definition
+try
+        runtime func.vim
+catch
+        echo "runtime func.vim failed"
+endtry
+
+
 " With a map leader it's possible to do extra key combinations
 let mapleader = ","
 map <space> ,
@@ -102,7 +110,7 @@ if !has('nvim')
 
 
         " defaults to "tcqj"
-        set formatoptions=tcqj 
+        set formatoptions=tcqj
 
 
         " Set to disable
@@ -131,10 +139,6 @@ if !has('nvim')
 
         " Always show the status line
         set laststatus=2
-
-
-        " Show 'tab' and 'end of line' as CTRL-I is displayed
-        set listchars=tab:\|\ ,trail:-,nbsp:+
 
 
         " Always show current position
@@ -232,6 +236,13 @@ set showmatch
 set matchtime=1 " How many tenths of a second to blink when matching brackets
 
 
+" Show 'tab' and 'end of line' as CTRL-I is displayed
+" set listchars=tab:\|\ ,trail:-,nbsp:+
+set listchars=tab:»\ ,trail:-,nbsp:+
+
+set list
+
+
 " Line number
 " Show line numbers (hybrid), and do some highlight settings
 set number relativenumber
@@ -279,6 +290,9 @@ set noswapfile
 " Turn persistent undo on (means that you can undo even when you close a buffer/VIM)
 set undodir=~/.vim/undo
 set undofile
+
+" remove undo files which have not been modified for N days
+call Tmpwatch(&undodir, 180)
 
 
 " Return to last edit position when opening files (You want this!)
@@ -424,7 +438,7 @@ endif
 
 
 
-" Imports / Sources "{{{
+" Imports key maps, plugin "{{{
 " -----------------------------------------------------------------------------
 
 try
@@ -432,14 +446,6 @@ try
         runtime maps.vim
 catch
         echo "runtime maps.vim failed"
-endtry
-
-
-try
-        " Import some functions
-        runtime func.vim
-catch
-        echo "runtime func.vim failed"
 endtry
 
 

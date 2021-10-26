@@ -80,7 +80,9 @@ nnoremap <Leader>= :buffers<CR>:b
 
 
 " Delete / Close the current buffer
-map <leader>d :bdelete<cr>
+" map <leader>dd :bdelete<cr>
+" map <leader>dd :Bclose<cr>:tabclose<cr>gT
+map <leader>dd :Bclose<cr>
 
 
 " -----------------------------------------------------------------------------

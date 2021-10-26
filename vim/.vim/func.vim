@@ -56,6 +56,62 @@ endfun
 
 
 
+" Don't close windows (keep windows layout), when deleting a buffer "{{{
+" -----------------------------------------------------------------------------
+
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+        let l:currentBufNum = bufnr("%")
+        let l:alternateBufNum = bufnr("#")
+
+        if buflisted(l:alternateBufNum)
+                buffer #
+        else
+                bnext
+        endif
+
+        if bufnr("%") == l:currentBufNum
+                new
+        endif
+
+        if buflisted(l:currentBufNum)
+                execute("bdelete! ".l:currentBufNum)
+        endif
+endfunction
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
+" kernel coding style - max-line-length "{{{
+" -----------------------------------------------------------------------------
+
+" For linux kernel coding style.
+"   Highlight 81 & 101 th column with vertical line.
+fun! ShowMaxLineLength()
+        if &colorcolumn == ''
+                set colorcolumn=81,101
+        else
+                set colorcolumn=
+        endif
+
+        " execute "set colorcolumn=" . join(range(81,335), ',').
+        " highlight ColorColumn ctermbg=Black ctermfg=DarkRed
+        " highlight ColorColumn ctermbg=Black
+endfun
+
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
 " Auto highlight "{{{
 " -----------------------------------------------------------------------------
 
@@ -109,6 +165,28 @@ autocmd InsertLeave * match ExtraWhitespace /\s+$/
 if version >= 702
         autocmd BufWinLeave * call clearmatches()
 endif
+
+" -----------------------------------------------------------------------------
+" }}}
+
+
+
+
+
+" clean undo files "{{{
+" -----------------------------------------------------------------------------
+function Tmpwatch(path, days)
+        let l:path = expand(a:path)
+        if isdirectory(l:path)
+                for file in split(globpath(l:path, "*"), "\n")
+                        if localtime() > getftime(file) + 86400 * a:days && delete(file) != 0
+                                echo "Tmpwatch(): Error deleting '" . file . "'"
+                        endif
+                endfor
+        else
+                echo "Tmpwatch(): Directory '" . l:path . "' not found"
+        endif
+endfunction
 
 " -----------------------------------------------------------------------------
 " }}}
