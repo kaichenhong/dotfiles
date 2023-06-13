@@ -1,0 +1,17 @@
+[user]
+[core]
+	editor = /opt/homebrew/bin/nvim
+	# pager = less
+	
+	# Don't consider trailing space change as a cause for merge conflicts
+	whitespace = -trailing-space
+[push]
+	# Default push should only push the current branch to its push target, regardless of its remote name
+	# default = upstream
+[diff]
+	algorithm = histogram
+[color]
+	ui = auto
+[alias]
+	lg = log --decorate --abbrev-commit
+	lgo = log --pretty=format:\"%C(auto)%h%d%Creset %s %C(red)|%Creset %C(blue)%an %C(cyan)(%ae)%Creset => %C(green)%cd (%cr)%Creset\"
